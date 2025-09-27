@@ -1,21 +1,28 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en">
+
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Laravel React</title>
+    <title>VRISTO - Multipurpose Tailwind Dashboard Template</title>
 
-    <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
 
-    {{-- Menggunakan directive @vite untuk memuat aset --}}
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+
     @viteReactRefresh
-    {{-- @vite(['resources/css/app.css', 'resources/js/App.tsx']) --}}
-    @vite(['resources/js/src/App.tsx'])
-
+    @vite(['resources/js/src/main.tsx'])
 </head>
-<body class="antialiased">
-    {{-- Ini adalah tempat aplikasi React Anda akan di-mount --}}
+
+<body>
+    <noscript>
+        <strong>We're sorry but Vristo doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+
     <div id="root"></div>
 </body>
+
 </html>
