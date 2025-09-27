@@ -3,14 +3,15 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
-import '../css/app.css';
+// import '../css/app.css';
+import './tailwind.css';
 
 
 // Buat komponen React sederhana
 function App() {
     return (
         <div className="container mx-auto mt-8">
-            <h1 className="text-3xl font-bold text-center">
+            <h1 className="text-3xl font-bold text-center text-primary">
                 🚀 Laravel + React + Vite Berhasil!
             </h1>
             <p className="text-center text-gray-600 mt-2">

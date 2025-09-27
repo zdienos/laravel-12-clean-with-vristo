@@ -11,7 +11,7 @@
     {{-- Menggunakan directive @vite untuk memuat aset --}}
     @viteReactRefresh
     {{-- @vite(['resources/css/app.css', 'resources/js/App.tsx']) --}}
-    @vite(['resources/js/App.tsx'])
+    @vite(['resources/js/src/App.tsx'])
 
 </head>
 <body class="antialiased">
