@@ -41,7 +41,7 @@ table tr .mantine-Checkbox-root {
 .datatables.pagination-padding .mantine-gzzjso {
     @apply !px-5;
 }
-[dir='rtl'] .datatables .mantine-ScrollArea-root.mantine-lvjyp7 {
+[dir="rtl"] .datatables .mantine-ScrollArea-root.mantine-lvjyp7 {
     direction: rtl;
 }
 .mantine-Table-root[data-hover] tbody tr:hover {
@@ -73,7 +73,7 @@ table tr .mantine-Checkbox-root {
 .mantine-Table-root th.text-right .mantine-Group-root {
     @apply !justify-end;
 }
-.datatables .mantine-Group-root[role='navigation'] {
+.datatables .mantine-Group-root[role="navigation"] {
     @apply flex-auto justify-end gap-1;
 }
 .mantine-Menu-dropdown {
@@ -116,4 +116,30 @@ table tr .mantine-Checkbox-root {
 }
 .mantine-ScrollArea-viewport > div:first-child > div {
     @apply bg-none;
+}
+
+/* custom style agar sesuai dengan template */
+
+.mantine-datatable-table[data-highlight-on-hover] tbody tr:hover {
+    @apply !bg-[#e0e6ed33] dark:!bg-[#1a2941]/40;
+}
+
+.mantine-datatable-table[data-striped] tbody tr:nth-of-type(odd) {
+    @apply bg-white-light/20 dark:!bg-[#1a2941]/40;
+}
+
+.datatables .mantine-Group-root[role="navigation"] {
+    @apply flex-auto justify-end gap-1;
+}
+
+.mantine-datatable-pagination-pages-control {
+    @apply h-9 w-9 rounded-full border-white-light !bg-white-light font-nunito text-sm !text-[#3b3f5c] hover:!bg-primary hover:!text-white dark:border-[#191e3a] dark:!bg-[#191e3a] dark:!text-white;
+}
+
+.mantine-datatable-pagination-pages-control[data-active] {
+    @apply !bg-primary !text-white;
+}
+
+.mantine-datatable-pagination {
+    align-self: flex-end;
 }

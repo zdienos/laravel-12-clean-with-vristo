@@ -564,9 +564,11 @@ const Basic = () => {
                         page={page}
                         onPageChange={(p) => setPage(p)}
                         recordsPerPageOptions={PAGE_SIZES}
+                        recordsPerPageLabel="Recosssrds per page"
                         onRecordsPerPageChange={setPageSize}
                         minHeight={200}
                         paginationText={({ from, to, totalRecords }) => `Showing  ${from} to ${to} of ${totalRecords} entries`}
+
                     />
                 </div>
             </div>
