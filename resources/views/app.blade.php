@@ -10,11 +10,12 @@
 
     {{-- Menggunakan directive @vite untuk memuat aset --}}
     @viteReactRefresh
-    @vite(['resources/css/app.css', 'resources/js/App.tsx'])
+    {{-- @vite(['resources/css/app.css', 'resources/js/App.tsx']) --}}
+    @vite(['resources/js/App.tsx'])
 
 </head>
 <body class="antialiased">
     {{-- Ini adalah tempat aplikasi React Anda akan di-mount --}}
-    <div id="app"></div>
+    <div id="root"></div>
 </body>
 </html>

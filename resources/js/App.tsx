@@ -3,6 +3,9 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
+import '../css/app.css';
+
+
 // Buat komponen React sederhana
 function App() {
     return (
@@ -18,7 +21,7 @@ function App() {
 }
 
 // Cari elemen dengan id 'app' dan render komponen React di dalamnya
-const container = document.getElementById('app');
+const container = document.getElementById('root');
 if (container) {
     const root = createRoot(container);
     root.render(
