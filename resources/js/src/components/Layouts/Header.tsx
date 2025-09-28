@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { IRootState } from '../../store';
 import { toggleRTL, toggleTheme, toggleSidebar } from '../../store/themeConfigSlice';
 import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
 import Dropdown from '../Dropdown';
+import axios from 'axios';
+import { logout } from '@/store/authSlice';
 
 const Header = () => {
     const location = useLocation();
@@ -34,6 +36,7 @@ const Header = () => {
 
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     function createMarkup(messages: any) {
         return { __html: messages };
@@ -111,6 +114,19 @@ const Header = () => {
     const [flag, setFlag] = useState(themeConfig.locale);
 
     const { t } = useTranslation();
+
+    const handleLogout = async () => {
+        try {
+            await axios.post('/api/logout'); // panggil backend
+        } catch (error) {
+            console.error('Logout gagal:', error);
+        } finally {
+            dispatch(logout()); // reset redux state
+            navigate('/auth/signin'); // redirect
+            // window.location.href = '/auth/signin'; // ⬅️ paksa reload full
+
+        }
+    };
 
     return (
         <header className={`z-40 ${themeConfig.semidark && themeConfig.menu === 'horizontal' ? 'dark' : ''}`}>
@@ -605,7 +621,7 @@ const Header = () => {
                                         </Link>
                                     </li>
                                     <li className="border-t border-white-light dark:border-white-light/10">
-                                        <Link to="/auth/boxed-signin" className="text-danger !py-3">
+                                        <Link to="#" className="text-danger !py-3" onClick={handleLogout}>
                                             <svg className="ltr:mr-2 rtl:ml-2 rotate-90 shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path
                                                     opacity="0.5"

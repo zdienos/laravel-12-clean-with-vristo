@@ -1,5 +1,6 @@
-import { lazy } from 'react';
+import { lazy, ReactNode } from 'react';
 import ProtectedRoute from './ProtectedRoute'; // Import
+import GuestRoute from './GuestRoute';
 const LoginBoxed = lazy(() => import('@/pages/Authentication/LoginBoxed'));
 
 const Index = lazy(() => import('@/pages/Index'));
@@ -7,34 +8,50 @@ const Brand = lazy(() => import('@/pages/Masters/Brand'));
 const Basic = lazy(() => import('@/pages/DataTables/Basic'));
 
 
-const routes = [
-    //authentication
-    //Authentication
+export type AppRoute = {
+    path: string;
+    element: ReactNode;
+    layout?: "blank" | "default"; // <-- bikin optional
+    children?: AppRoute[];
+};
+
+export const routes: AppRoute[] = [
     {
-        path: '/auth/signin',
-        element: <LoginBoxed />,
-        layout: 'blank',
+        path: '/auth',
+        element: <GuestRoute />,   // semua child route di bawah ini hanya untuk guest
+        children: [
+            {
+                path: 'signin',
+                element: <LoginBoxed />,
+                layout: 'blank',
+            },
+        ],
     },
-    // dashboard
     {
         path: '/',
-        element: <ProtectedRoute><Index /></ProtectedRoute>
+        element: <ProtectedRoute />, // semua child route di bawah ini butuh login
+        children: [
+            {
+                // index: true,
+                path: '/',
+                element: <Index />,
+                layout: 'default',
+            },
+            {
+                // index: true,
+                path: '/datatables/basic',
+                element: <Basic />,
+                layout: 'default',
+            },
+            {
+                // index: true,
+                path: '/masters/brand',
+                element: <Brand />,
+                layout: 'default',
+            },
+            // route lain yang butuh login
+        ],
     },
-    {
-        path: '/datatables/basic',
-        element: <ProtectedRoute><Basic />,</ProtectedRoute>
-    },
-    {
-        path: '/masters/brand',
-        element: <ProtectedRoute><Brand /></ProtectedRoute>,
-    }
-
-    // {
-    //     path: '/index',
-    //     element: <Index />,
-    // },
-    // analytics page
-    // Masters
 ];
 
-export { routes };
+

@@ -77,7 +77,7 @@ const Dropdown = forwardRef((props: DropdownProps, forwardedRef) => {
                     <div
                         ref={refs.setFloating}
                         style={floatingStyles}
-                        className="z-50"
+                        className="z-1000"
                         {...getFloatingProps()}
                     >
                         {props.children}
