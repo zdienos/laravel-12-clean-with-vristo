@@ -2,7 +2,7 @@ import { PropsWithChildren, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from './store';
 import { toggleRTL, toggleTheme, toggleLocale, toggleMenu, toggleLayout, toggleAnimation, toggleNavbar, toggleSemidark } from './store/themeConfigSlice';
-import { setUser } from './store/authSlice';
+import { setUser, setLoading } from './store/authSlice';
 import axios from './lib/axios';
 
 function App({ children }: PropsWithChildren) {
@@ -29,12 +29,20 @@ function App({ children }: PropsWithChildren) {
         if (isAuthenticated) {
             return;
         }
+        // const checkAuth = async () => {
+        //     try {
+        //         const { data: user } = await axios.get('/api/user');
+        //         dispatch(setUser(user));
+        //     } catch (error) {
+        //         console.log('User not authenticated');
+        //     }
+        // };
         const checkAuth = async () => {
             try {
                 const { data: user } = await axios.get('/api/user');
                 dispatch(setUser(user));
             } catch (error) {
-                console.log('User not authenticated');
+                dispatch(setLoading(false));
             }
         };
         checkAuth();
