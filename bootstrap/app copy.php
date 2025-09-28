@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Session\Middleware\StartSession;
+
 use Illuminate\Http\Request;
 use Illuminate\Auth\AuthenticationException;
 
@@ -14,18 +16,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Secara manual menambahkan middleware yang dibutuhkan untuk API stateful.
-        // Ini adalah pengganti dari statefulApi() yang tidak berjalan.
-        $middleware->api(prepend: [
-            \Illuminate\Cookie\Middleware\EncryptCookies::class,
-            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\Session\Middleware\StartSession::class,
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-        ]);
+        // Cara modern untuk menambahkan semua middleware
+        // yang dibutuhkan Sanctum untuk SPA ke grup 'api'.
+        $middleware->append(StartSession::class);
+        // $middleware->statefulApi();
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        // Handler ini akan berjalan jika pengguna belum login
-        // saat mengakses rute API yang terproteksi.
+        // Handler untuk memastikan error "Unauthenticated"
+        // selalu mengembalikan JSON untuk rute API.
         $exceptions->render(function (AuthenticationException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([

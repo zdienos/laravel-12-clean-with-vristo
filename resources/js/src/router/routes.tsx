@@ -1,20 +1,33 @@
 import { lazy } from 'react';
-import ProtectedRoute from './ProtectedRoute'; // Import ProtectedRoute
-const Index = lazy(() => import('../pages/Index'));
+import ProtectedRoute from './ProtectedRoute'; // Import
+const LoginBoxed = lazy(() => import('@/pages/Authentication/LoginBoxed'));
+
+const Index = lazy(() => import('@/pages/Index'));
 const Brand = lazy(() => import('@/pages/Masters/Brand'));
-const Basic = lazy(() => import('../pages/DataTables/Basic'));
+const Basic = lazy(() => import('@/pages/DataTables/Basic'));
 
 
 const routes = [
+    //authentication
+    //Authentication
+    {
+        path: '/auth/signin',
+        element: <LoginBoxed />,
+        layout: 'blank',
+    },
     // dashboard
     {
         path: '/',
-        element: <Index />
+        element: <ProtectedRoute><Index /></ProtectedRoute>
     },
     {
         path: '/datatables/basic',
-        element: <Basic />,
+        element: <ProtectedRoute><Basic />,</ProtectedRoute>
     },
+    {
+        path: '/masters/brand',
+        element: <ProtectedRoute><Brand /></ProtectedRoute>,
+    }
 
     // {
     //     path: '/index',
@@ -22,10 +35,6 @@ const routes = [
     // },
     // analytics page
     // Masters
-    {
-        path: '/masters/brand',
-        element: <Brand />,
-    }
 ];
 
 export { routes };

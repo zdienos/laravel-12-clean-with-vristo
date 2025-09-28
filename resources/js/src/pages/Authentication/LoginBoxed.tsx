@@ -1,11 +1,13 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { IRootState } from '../../store';
+import { IRootState } from '@/store';
 import { useEffect, useState } from 'react';
-import { setPageTitle, toggleRTL } from '../../store/themeConfigSlice';
-import Dropdown from '../../components/Dropdown';
+import { setPageTitle, toggleRTL } from '@/store/themeConfigSlice';
+import Dropdown from '@/components/Dropdown';
 import i18next from 'i18next';
-import axios from '../../lib/axios';
+import axios from '@/lib/axios';
+import { setUser } from '@/store/authSlice';
+
 
 const LoginBoxed = () => {
     const dispatch = useDispatch();
@@ -29,24 +31,88 @@ const LoginBoxed = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
+    // const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
+    //     setError('');
+    //     try {
+    //         await axios.get('/sanctum/csrf-cookie');
+    //         await axios.post('/login', { email, password });
+    //         window.location.pathname = '/';
+    //     } catch (err: any) {
+    //         if (err.response && err.response.status === 422) {
+    //             const validationErrors = err.response.data.errors;
+    //             if (validationErrors.email) {
+    //                 setError(validationErrors.email[0]);
+    //             } else {
+    //                 setError(err.response.data.message || 'The provided credentials do not match our records.');
+    //             }
+    //         } else {
+    //             setError('An error occurred. Please try again.');
+    //             console.error(err);
+    //         }
+    //     }
+    // };
+
+    // const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
+    //     setError('');
+    //     try {
+    //         await axios.get('/sanctum/csrf-cookie');
+    //         await axios.post('/login', { email, password });
+
+    //         // Ambil data user setelah login
+    //         // const { data: user } = await axios.get('/api/user');
+
+    //         // Simpan data user ke Redux store
+    //         // dispatch(setUser(user));
+
+    //         // Gunakan navigate untuk pindah halaman (TIDAK full reload)
+    //         navigate('/');
+    //     } catch (err: any) {
+    //         if (err.response && err.response.status === 422) {
+    //             const validationErrors = err.response.data.errors;
+    //             if (validationErrors.email) {
+    //                 setError(validationErrors.email[0]);
+    //             } else {
+    //                 setError(err.response.data.message || 'The provided credentials do not match our records.');
+    //             }
+    //         } else {
+    //             setError('An error occurred. Please try again.');
+    //             console.error(err);
+    //         }
+    //     }
+    // };
+
     const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
+
         try {
+            // 1. Dapatkan CSRF cookie
             await axios.get('/sanctum/csrf-cookie');
-            await axios.post('/login', { email, password });
-            window.location.pathname = '/';
+
+            // 2. Kirim permintaan login
+            await axios.post('/api/login', { email, password });
+
+            // 3. Jika login berhasil, AMBIL data user
+            const { data: user } = await axios.get('/api/user');
+
+            // 4. SIMPAN data user ke Redux store
+            dispatch(setUser(user));
+
+            // 5. BARU redirect menggunakan navigate
+            navigate('/');
+
         } catch (err: any) {
-            if (err.response && err.response.status === 422) {
-                const validationErrors = err.response.data.errors;
-                if (validationErrors.email) {
-                    setError(validationErrors.email[0]);
-                } else {
+            if (err.response) {
+                if (err.response.status === 422 || err.response.status === 401) {
+                    // Tangani error kredensial tidak valid
                     setError(err.response.data.message || 'The provided credentials do not match our records.');
+                } else {
+                    // Tangani error lainnya
+                    setError('An error occurred. Please try again.');
+                    console.error(err);
                 }
-            } else {
-                setError('An error occurred. Please try again.');
-                console.error(err);
             }
         }
     };
