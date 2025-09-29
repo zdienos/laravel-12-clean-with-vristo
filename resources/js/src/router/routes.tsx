@@ -19,11 +19,11 @@ export const routes: AppRoute[] = [
     {
         path: '/auth',
         element: <GuestRoute />,   // semua child route di bawah ini hanya untuk guest
+        layout: 'blank',
         children: [
             {
                 path: 'signin',
                 element: <LoginBoxed />,
-                layout: 'blank',
             },
         ],
     },
